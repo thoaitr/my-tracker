@@ -328,6 +328,159 @@
   .set-btn:active { transform: scale(0.97); }
   .set-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
 
+  /* Streak flame icon */
+  .streak-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    margin: 2px 0;
+  }
+  .streak-flame {
+    width: 28px; height: 28px;
+    color: var(--clay);
+    flex-shrink: 0;
+  }
+  .streak-flame.cold { color: var(--ink-faint); opacity: 0.4; }
+
+  /* Clickable mini calendar */
+  .wp-cell { cursor: pointer; transition: transform 0.1s; }
+  .wp-cell:active { transform: scale(0.96); }
+  .wp-cell.selected {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  .wp-cell.selected .wp-dow,
+  .wp-cell.selected .wp-date,
+  .wp-cell.selected .wp-activity { color: white; }
+  .wp-cell.selected::before { opacity: 0.6; }
+
+  /* Day details (the plan banner) */
+  .plan-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .plan-type-badge {
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: var(--teal-bg);
+    color: var(--teal);
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  .plan-type-badge.cardio   { background: var(--amber-bg); color: var(--amber); }
+  .plan-type-badge.football { background: var(--clay-bg); color: var(--clay); }
+  .plan-type-badge.rest     { background: var(--bg); color: var(--ink-muted); }
+  .plan-stats {
+    display: grid;
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .plan-stats.cols-1 { grid-template-columns: 1fr; }
+  .plan-stats.cols-2 { grid-template-columns: 1fr 1fr; }
+  .plan-stats.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .plan-stat {
+    padding: 10px 8px;
+    background: var(--bg);
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid var(--border-soft);
+  }
+  .plan-stat .ps-lbl {
+    font-size: 10.5px;
+    color: var(--ink-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .plan-stat .ps-val {
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-top: 3px;
+    font-family: 'Fraunces', Georgia, serif;
+    line-height: 1.1;
+  }
+  .plan-stat .ps-unit {
+    font-size: 11px;
+    color: var(--ink-muted);
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: 400;
+    margin-left: 3px;
+  }
+  .plan-note {
+    margin-top: 12px;
+    font-size: 12.5px;
+    color: var(--ink-muted);
+    line-height: 1.55;
+    padding: 10px 0 0;
+    border-top: 1px solid var(--border-soft);
+  }
+
+  /* Submit ritual button */
+  .submit-section { margin-top: 28px; }
+  .submit-btn {
+    width: 100%;
+    padding: 16px 18px;
+    background: var(--teal);
+    color: white;
+    border: 0.5px solid var(--teal);
+    border-radius: 12px;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    -webkit-appearance: none;
+  }
+  .submit-btn:hover { opacity: 0.92; }
+  .submit-btn:active { transform: scale(0.99); }
+  .submit-btn svg { width: 18px; height: 18px; }
+
+  .submit-stamp {
+    padding: 20px 16px;
+    background: var(--teal-bg);
+    border: 1px solid var(--teal);
+    border-radius: 12px;
+    text-align: center;
+  }
+  .submit-stamp .ss-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 19px;
+    color: var(--teal);
+    font-style: italic;
+    margin-bottom: 6px;
+  }
+  .submit-stamp .ss-time {
+    font-size: 12.5px;
+    color: var(--teal);
+    opacity: 0.85;
+  }
+  .submit-stamp .ss-reopen {
+    margin-top: 14px;
+    background: none;
+    border: none;
+    color: var(--ink-muted);
+    font-size: 12px;
+    font-family: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 4px 8px;
+  }
+
+  /* Locked state */
+  .locked { opacity: 0.65; pointer-events: none; }
+
   .quote {
     font-family: 'Fraunces', Georgia, serif;
     font-size: 14.5px; line-height: 1.55; color: var(--ink-muted);
@@ -353,7 +506,12 @@
   </div>
   <div class="streak">
     <div class="streak-label">Chuỗi liên tục</div>
-    <div class="streak-num serif" id="streak-num">0</div>
+    <div class="streak-row">
+      <svg class="streak-flame" id="streak-flame" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+        <path d="M12 2.69a1 1 0 0 1 1.6.8c0 4.13 2.39 5.5 3.95 7.07A6.5 6.5 0 1 1 5.5 15c0-2.5 1.16-4.3 2.51-5.46a1 1 0 0 1 1.65.69c.1 1.4.85 2.13 1.55 2.26.55.1 1.1-.27 1.18-.92.13-1.04-.5-2.13-1.78-3.05a8.05 8.05 0 0 1 1.39-5.84z"/>
+      </svg>
+      <div class="streak-num serif" id="streak-num">0</div>
+    </div>
     <div class="streak-unit">ngày</div>
   </div>
 </header>
@@ -363,10 +521,16 @@
 <div class="section-title">Lịch tuần này</div>
 <div class="week-plan" id="week-plan"></div>
 
-<div class="plan">
-  <div class="plan-label">Lịch hôm nay</div>
-  <div class="plan-text" id="plan-text">—</div>
-  <div class="plan-numbers" id="plan-numbers"></div>
+<div class="plan" id="plan">
+  <div class="plan-header">
+    <div>
+      <div class="plan-label" id="plan-label">Hôm nay</div>
+      <div class="plan-text" id="plan-text">—</div>
+    </div>
+    <div class="plan-type-badge" id="plan-type-badge">—</div>
+  </div>
+  <div class="plan-stats" id="plan-stats"></div>
+  <div class="plan-note" id="plan-note"></div>
 </div>
 
 <div class="section-title">Việc cần làm hôm nay</div>
@@ -418,6 +582,8 @@
   <textarea id="note" placeholder="Cảm giác trong ngày, ăn gì, có lỡ luật không..."></textarea>
 </div>
 
+<div class="submit-section" id="submit-section"></div>
+
 <div class="settings">
   <button class="set-btn" id="theme-toggle" type="button">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -465,13 +631,34 @@
 
   // Lịch tuần: 0=CN ... 6=T7
   var SCHEDULE = {
-    1: { text: 'Challenge + xà đơn công viên 15 phút', short: 'Xà đơn', type: 'strength', highlight: 'workout', allowBeer: false, beerNote: 'Tối nay KHÔNG uống — mai T3 chạy' },
-    2: { text: 'Chạy easy 25–30 phút (tốc độ nói chuyện được)', short: 'Chạy 30\'', type: 'cardio', highlight: 'cardio', allowBeer: false, beerNote: 'Tối nay KHÔNG uống — mai T4 challenge' },
-    3: { text: 'Challenge + xà đơn công viên 15 phút', short: 'Xà đơn', type: 'strength', highlight: 'workout', allowBeer: false, beerNote: 'Tối nay KHÔNG uống — mai T5 đá bóng' },
-    4: { text: 'Đá bóng 1.5 tiếng tối', short: 'Đá bóng', type: 'football', highlight: 'football', allowBeer: false, beerNote: 'Tối nay KHÔNG uống — đá bóng cần tỉnh' },
-    5: { text: 'Challenge + xà đơn 15 phút + nhảy dây 10 phút', short: 'Xà + dây', type: 'strength', highlight: 'workout', allowBeer: true, beerNote: 'Tối nay được uống, tối đa 2 lon' },
-    6: { text: 'Long run 10km — tốc độ thoải mái', short: '10km', type: 'cardio', highlight: 'longrun', allowBeer: true, beerNote: 'Tối nay được uống, tối đa 2 lon' },
-    0: { text: 'Nghỉ + đi bộ 20–30 phút + stretch', short: 'Nghỉ', type: 'rest', highlight: 'rest', allowBeer: false, beerNote: 'Tối nay KHÔNG uống — bắt đầu tuần mới' }
+    1: { text: 'Challenge + xà đơn công viên', short: 'Xà đơn', type: 'strength', typeLabel: 'Sức mạnh',
+         stats: 'challenge', extras: [{ label: 'Xà đơn', value: '15', unit: 'phút' }],
+         note: 'Rải đều 6 set × 30 cái mỗi loại. 50% trước khi tập xà, 50% sau. Xà: pull-up + chin-up + hanging knee raise + dead hang.',
+         allowBeer: false, beerNote: 'Tối nay KHÔNG uống — mai T3 chạy' },
+    2: { text: 'Chạy easy', short: 'Chạy 30\'', type: 'cardio', typeLabel: 'Cardio',
+         stats: 'fixed', extras: [{ label: 'Chạy easy', value: '25–30', unit: 'phút' }, { label: 'Pace', value: 'Zone 2', unit: '' }],
+         note: 'Tốc độ nói chuyện được. 5\' đi bộ khởi động + 20–25\' chạy + 3\' hạ nhiệt. Nếu hụt hơi, xen kẽ 2\' chạy / 1\' đi bộ.',
+         allowBeer: false, beerNote: 'Tối nay KHÔNG uống — mai T4 challenge' },
+    3: { text: 'Challenge + xà đơn công viên', short: 'Xà đơn', type: 'strength', typeLabel: 'Sức mạnh',
+         stats: 'challenge', extras: [{ label: 'Xà đơn', value: '15', unit: 'phút' }],
+         note: 'Rải đều 6 set × 30 cái. 50% trước khi tập xà, 50% sau. Mai đá bóng nên giữ chân tươi — không tập nặng thêm.',
+         allowBeer: false, beerNote: 'Tối nay KHÔNG uống — mai T5 đá bóng' },
+    4: { text: 'Đá bóng tối', short: 'Đá bóng', type: 'football', typeLabel: 'Đá bóng',
+         stats: 'fixed', extras: [{ label: 'Đá bóng', value: '1.5', unit: 'giờ' }, { label: 'Cường độ', value: 'Cao', unit: '' }],
+         note: 'Trưa ăn nhiều carb (1.5 chén cơm). 2h trước trận: chuối + cà phê đen. Khởi động kỹ 8\' trước — chạy nhẹ, high knees, leg swings. Sau trận: cơm + protein + 500ml nước có muối.',
+         allowBeer: false, beerNote: 'Tối nay KHÔNG uống — đá bóng cần tỉnh' },
+    5: { text: 'Challenge + xà đơn + nhảy dây', short: 'Xà + dây', type: 'strength', typeLabel: 'Sức mạnh',
+         stats: 'challenge', extras: [{ label: 'Xà đơn', value: '15', unit: 'phút' }, { label: 'Nhảy dây', value: '10', unit: 'phút' }],
+         note: 'Xà đơn 15 phút + nhảy dây HIIT 10 phút (10 vòng × 30s nhảy / 30s nghỉ). Stretch bắp chân kỹ sau khi nhảy dây.',
+         allowBeer: true, beerNote: 'Tối nay được uống, tối đa 2 lon' },
+    6: { text: 'Long run', short: '10km', type: 'cardio', typeLabel: 'Cardio dài',
+         stats: 'fixed', extras: [{ label: 'Long run', value: '10', unit: 'km' }, { label: 'Pace', value: 'Thoải mái', unit: '' }],
+         note: 'Cùng tốc độ chậm như T3, dài hơn. Mục tiêu: tăng aerobic base, đốt nhiều calo. 5\' đi bộ khởi động + 5\' hạ nhiệt.',
+         allowBeer: true, beerNote: 'Tối nay được uống, tối đa 2 lon' },
+    0: { text: 'Nghỉ + đi bộ + stretch', short: 'Nghỉ', type: 'rest', typeLabel: 'Hồi phục',
+         stats: 'fixed', extras: [{ label: 'Đi bộ', value: '20–30', unit: 'phút' }, { label: 'Đo', value: 'Sáng', unit: '' }],
+         note: 'Nghỉ hoàn toàn vận động cường độ. Stretch toàn thân 10 phút. Sáng cân + đo vòng eo + ghi vào tracker để theo dõi tuần.',
+         allowBeer: false, beerNote: 'Tối nay KHÔNG uống — bắt đầu tuần mới' }
   };
 
   // Push-up + squat numbers per session (T2/T4/T6), bắt đầu T2 15/6 = 180
@@ -554,6 +741,13 @@
 
   function checkSvg() { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'; }
 
+  function updateStreak(s) {
+    document.getElementById('streak-num').textContent = s;
+    var flame = document.getElementById('streak-flame');
+    if (s === 0) flame.classList.add('cold');
+    else flame.classList.remove('cold');
+  }
+
   function renderHabits() {
     var c = document.getElementById('habits');
     c.innerHTML = '';
@@ -571,7 +765,7 @@
         renderHabits();
         updateProg();
         var s = await calcStreak();
-        document.getElementById('streak-num').textContent = s;
+        updateStreak(s);
         await renderWeek();
         await renderStats();
       });
@@ -635,7 +829,7 @@
     updateProg();
     updateLastSaved();
     var s = await calcStreak();
-    document.getElementById('streak-num').textContent = s;
+    updateStreak(s);
     await renderStats();
   }
 
@@ -675,12 +869,77 @@
     document.getElementById('s-perfect').textContent = perfect;
   }
 
+  // ---- Submit ritual ----
+  async function getSubmitTime() {
+    return await storage.get('submitted-v3:' + todayKey());
+  }
+  async function setSubmitTime(t) {
+    if (t === null) await storage.set('submitted-v3:' + todayKey(), '');
+    else await storage.set('submitted-v3:' + todayKey(), t);
+  }
+
+  function lockUI(locked) {
+    var habitsEl = document.getElementById('habits');
+    var beerEl = document.querySelector('.beer');
+    if (locked) {
+      habitsEl.classList.add('locked');
+      if (beerEl) beerEl.classList.add('locked');
+    } else {
+      habitsEl.classList.remove('locked');
+      if (beerEl) beerEl.classList.remove('locked');
+    }
+  }
+
+  async function renderSubmit() {
+    var section = document.getElementById('submit-section');
+    var t = await getSubmitTime();
+    if (t) {
+      section.innerHTML =
+        '<div class="submit-stamp">' +
+          '<div class="ss-title">Đã nộp bài hôm nay</div>' +
+          '<div class="ss-time">Lúc ' + t + ' — ngày đã đóng</div>' +
+          '<button class="ss-reopen" id="reopen-btn" type="button">Mở lại để chỉnh</button>' +
+        '</div>';
+      lockUI(true);
+      document.getElementById('reopen-btn').addEventListener('click', async function() {
+        if (!confirm('Mở lại ngày để chỉnh sửa? Submission time sẽ bị xoá.')) return;
+        await setSubmitTime(null);
+        lockUI(false);
+        await renderSubmit();
+      });
+    } else {
+      section.innerHTML =
+        '<button class="submit-btn" id="submit-btn" type="button">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' +
+          'Nộp bài hôm nay' +
+        '</button>';
+      lockUI(false);
+      document.getElementById('submit-btn').addEventListener('click', async function() {
+        var done = Object.values(todayData).filter(Boolean).length;
+        var msg = done === 5
+          ? 'Hoàn hảo 5/5 — nộp bài và đóng ngày hôm nay?'
+          : done >= 3
+            ? done + '/5 — đủ để giữ streak. Nộp bài và đóng ngày?'
+            : done + '/5 — chưa đủ 3/5 để giữ streak. Vẫn nộp bài?';
+        if (!confirm(msg)) return;
+        var now = new Date();
+        var hh = (now.getHours() < 10 ? '0' : '') + now.getHours();
+        var mm = (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+        await setSubmitTime(hh + ':' + mm);
+        await renderSubmit();
+        // Scroll to stamp gently
+        setTimeout(function() {
+          document.getElementById('submit-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      });
+    }
+  }
+
   function renderWeekPlan() {
     var c = document.getElementById('week-plan');
     c.innerHTML = '';
     var today = new Date();
     var dow = today.getDay();
-    // Find Monday of current week (treat CN as end of week)
     var monday = new Date(today);
     var diff = dow === 0 ? -6 : 1 - dow;
     monday.setDate(today.getDate() + diff);
@@ -690,28 +949,59 @@
       var dDow = d.getDay();
       var sched = SCHEDULE[dDow];
       var isToday = dateKey(d) === todayKey();
+      var isSelected = dateKey(d) === dateKey(selectedDate);
       var cell = document.createElement('div');
-      cell.className = 'wp-cell type-' + sched.type + (isToday ? ' today' : '');
+      cell.className = 'wp-cell type-' + sched.type + (isToday ? ' today' : '') + (isSelected ? ' selected' : '');
       cell.innerHTML =
         '<div class="wp-dow">' + DAYS_SHORT[dDow] + '</div>' +
         '<div class="wp-date">' + d.getDate() + '</div>' +
         '<div class="wp-activity">' + sched.short + '</div>';
+      (function(clickedDate) {
+        cell.addEventListener('click', function() {
+          selectedDate = clickedDate;
+          renderWeekPlan();
+          renderPlan();
+        });
+      })(new Date(d));
       c.appendChild(cell);
     }
   }
 
+  var selectedDate = new Date();
+
   function renderPlan() {
-    var today = new Date();
-    var dow = today.getDay();
+    var d = selectedDate;
+    var dow = d.getDay();
     var sched = SCHEDULE[dow];
+    var isToday = dateKey(d) === todayKey();
+    document.getElementById('plan-label').textContent = isToday ? 'Hôm nay' : (DAYS_FULL[dow] + ' ' + d.getDate() + '/' + (d.getMonth()+1));
     document.getElementById('plan-text').textContent = sched.text;
-    var ch = challengeNumber(today);
-    var pn = document.getElementById('plan-numbers');
-    if (ch) {
-      pn.innerHTML = 'Challenge hôm nay: <b>' + ch + '</b> push-up và <b>' + ch + '</b> squat';
-    } else {
-      pn.innerHTML = '';
+    var badge = document.getElementById('plan-type-badge');
+    badge.className = 'plan-type-badge ' + sched.type;
+    badge.textContent = sched.typeLabel;
+
+    var statsEl = document.getElementById('plan-stats');
+    statsEl.innerHTML = '';
+    var statItems = [];
+    if (sched.stats === 'challenge') {
+      var ch = challengeNumber(d);
+      if (ch) {
+        statItems.push({ label: 'Hít đất', value: ch, unit: 'cái' });
+        statItems.push({ label: 'Squat', value: ch, unit: 'cái' });
+      }
     }
+    for (var ei = 0; ei < sched.extras.length; ei++) statItems.push(sched.extras[ei]);
+
+    statsEl.className = 'plan-stats cols-' + Math.min(statItems.length, 3);
+    for (var si = 0; si < statItems.length; si++) {
+      var s = statItems[si];
+      var cell = document.createElement('div');
+      cell.className = 'plan-stat';
+      cell.innerHTML = '<div class="ps-lbl">' + s.label + '</div><div class="ps-val">' + s.value + (s.unit ? '<span class="ps-unit">' + s.unit + '</span>' : '') + '</div>';
+      statsEl.appendChild(cell);
+    }
+
+    document.getElementById('plan-note').textContent = sched.note;
   }
 
   function updateLastSaved() {
@@ -744,9 +1034,10 @@
     renderHabits(); // re-render after auto-check
     updateProg();
     var s = await calcStreak();
-    document.getElementById('streak-num').textContent = s;
+    updateStreak(s);
     await renderWeek();
     await renderStats();
+    await renderSubmit();
 
     // Event handlers
     document.getElementById('beer-plus').addEventListener('click', function() { changeBeer(1); });
@@ -805,7 +1096,7 @@
     async function exportAll() {
       var data = {};
       var keys = [];
-      var prefixes = ['habits-v3:', 'beer-v3:', 'note-v3:', 'weight-v3:', 'waist-v3:'];
+      var prefixes = ['habits-v3:', 'beer-v3:', 'note-v3:', 'weight-v3:', 'waist-v3:', 'submitted-v3:'];
       if (hasClaudeStorage) {
         for (var pi = 0; pi < prefixes.length; pi++) {
           try {
